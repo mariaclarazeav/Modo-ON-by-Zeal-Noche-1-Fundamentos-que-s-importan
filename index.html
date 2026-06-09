@@ -1,0 +1,2236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modo ON by Zeal — Noche 1</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap');
+
+  :root {
+    --vino: #350205;
+    --rojo: #800100;
+    --borgona: #531D03;
+    --blanco: #FFFFFF;
+    --rojo-claro: #a00200;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--vino);
+    color: var(--blanco);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ══════════════════════════════════════
+     PARTÍCULAS / FONDO ANIMADO
+  ══════════════════════════════════════ */
+  #particles {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .particle {
+    position: absolute;
+    font-size: 1.2rem;
+    opacity: 0.08;
+    animation: float linear infinite;
+    color: var(--blanco);
+    user-select: none;
+  }
+
+  @keyframes float {
+    0%   { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.08; }
+    90%  { opacity: 0.08; }
+    100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* ══════════════════════════════════════
+     MARCA DE AGUA Ż
+  ══════════════════════════════════════ */
+  .watermark {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 8rem;
+    font-weight: 900;
+    color: var(--blanco);
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 1;
+    user-select: none;
+    line-height: 1;
+  }
+
+  /* ══════════════════════════════════════
+     NAV
+  ══════════════════════════════════════ */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to bottom, rgba(53,2,5,0.95) 0%, transparent 100%);
+    backdrop-filter: blur(4px);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--blanco);
+    letter-spacing: 0.05em;
+  }
+
+  .nav-logo span { color: var(--rojo); }
+
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--blanco); }
+
+  /* ══════════════════════════════════════
+     HERO — SLIDE 1
+  ══════════════════════════════════════ */
+  #hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: var(--rojo);
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .hero-bg-pattern {
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 1px, transparent 0, transparent 50%);
+    background-size: 30px 30px;
+  }
+
+  .hero-card-left,
+  .hero-card-right {
+    position: absolute;
+    width: 160px;
+    height: 240px;
+    border-radius: 12px;
+    border: 2px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    color: rgba(255,255,255,0.15);
+    transform-origin: center;
+  }
+
+  .hero-card-left {
+    left: 5%;
+    top: 50%;
+    transform: translateY(-50%) rotate(-15deg);
+    animation: cardFloat 6s ease-in-out infinite;
+  }
+
+  .hero-card-right {
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%) rotate(15deg);
+    animation: cardFloat 6s ease-in-out infinite 2s;
+  }
+
+  @keyframes cardFloat {
+    0%, 100% { transform: translateY(-50%) rotate(-15deg) translateY(0); }
+    50% { transform: translateY(-50%) rotate(-15deg) translateY(-20px); }
+  }
+
+  .hero-card-right { animation-name: cardFloatRight; }
+  @keyframes cardFloatRight {
+    0%, 100% { transform: translateY(-50%) rotate(15deg) translateY(0); }
+    50% { transform: translateY(-50%) rotate(15deg) translateY(-20px); }
+  }
+
+  .hero-suits {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+    animation: fadeDown 1s ease both;
+  }
+
+  .hero-suits span {
+    opacity: 0.6;
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  .hero-suits span:nth-child(2) { animation-delay: 0.5s; }
+  .hero-suits span:nth-child(3) { animation-delay: 1s; }
+  .hero-suits span:nth-child(4) { animation-delay: 1.5s; }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
+
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 1.5rem;
+    animation: fadeDown 1s ease 0.2s both;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 1rem;
+    animation: fadeDown 1s ease 0.4s both;
+  }
+
+  .hero-title .by { font-style: italic; font-weight: 400; font-size: 0.6em; }
+
+  .hero-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    font-style: italic;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 2.5rem;
+    animation: fadeDown 1s ease 0.6s both;
+  }
+
+  .hero-date {
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    animation: fadeDown 1s ease 0.8s both;
+    margin-bottom: 3rem;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--blanco);
+    color: var(--rojo);
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: transform 0.3s, box-shadow 0.3s;
+    animation: fadeDown 1s ease 1s both;
+  }
+
+  .hero-cta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    animation: fadeDown 1s ease 1.5s both;
+  }
+
+  .hero-scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollLine {
+    0%, 100% { transform: scaleY(1); opacity: 1; }
+    50% { transform: scaleY(0.5); opacity: 0.5; }
+  }
+
+  /* ══════════════════════════════════════
+     SECTIONS BASE
+  ══════════════════════════════════════ */
+  section {
+    position: relative;
+    z-index: 2;
+    padding: 5rem 2rem;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--rojo);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 1px;
+    background: var(--rojo);
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-title em {
+    color: var(--rojo);
+    font-style: italic;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 2 — MARIA CLARA
+  ══════════════════════════════════════ */
+  #maria-clara {
+    background: var(--vino);
+  }
+
+  .mc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .mc-photo-wrapper {
+    position: relative;
+  }
+
+  .mc-photo-frame {
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .mc-photo-frame::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(135deg, var(--rojo), transparent, var(--rojo));
+    border-radius: 6px;
+    z-index: -1;
+  }
+
+  .mc-photo {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    border-radius: 4px;
+    display: block;
+    filter: grayscale(20%) contrast(1.1);
+  }
+
+  .mc-photo-placeholder {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: linear-gradient(135deg, var(--borgona), var(--rojo));
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    opacity: 0.6;
+    position: relative;
+  }
+
+  .mc-card-corner {
+    position: absolute;
+    top: 1rem; left: 1rem;
+    font-size: 1.2rem;
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    opacity: 0.5;
+  }
+
+  .mc-card-corner-br {
+    position: absolute;
+    bottom: 1rem; right: 1rem;
+    font-size: 1.2rem;
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    opacity: 0.5;
+    transform: rotate(180deg);
+  }
+
+  .mc-tag {
+    display: inline-block;
+    background: var(--rojo);
+    color: var(--blanco);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+    border-radius: 2px;
+    margin-bottom: 1.5rem;
+  }
+
+  .mc-text {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 1.5rem;
+  }
+
+  .mc-stats {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .mc-stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--rojo);
+    line-height: 1;
+  }
+
+  .mc-stat-label {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 0.25rem;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 3 — LAS 3 NOCHES
+  ══════════════════════════════════════ */
+  #tres-noches {
+    background: var(--borgona);
+  }
+
+  .noches-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .noche-card {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s, border-color 0.4s;
+    cursor: default;
+  }
+
+  .noche-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--rojo);
+  }
+
+  .noche-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--rojo);
+    transform: scaleX(0);
+    transition: transform 0.4s;
+  }
+
+  .noche-card:hover::before { transform: scaleX(1); }
+
+  .noche-suit {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .noche-num {
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 0.5rem;
+  }
+
+  .noche-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--blanco);
+  }
+
+  .noche-desc {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.65);
+  }
+
+  .noche-active .noche-title { color: var(--rojo); }
+  .noche-active { border-color: rgba(128,1,0,0.5); }
+
+  /* ══════════════════════════════════════
+     SLIDE 4 — EVOLUCIÓN
+  ══════════════════════════════════════ */
+  #evolucion {
+    background: var(--vino);
+  }
+
+  .timeline {
+    position: relative;
+    margin-top: 3rem;
+    padding-left: 2rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--rojo), rgba(128,1,0,0.2));
+  }
+
+  .timeline-item {
+    position: relative;
+    padding: 0 0 2.5rem 2rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+
+  .timeline-item.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -0.4rem;
+    top: 0.4rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--rojo);
+    border: 2px solid var(--vino);
+  }
+
+  .timeline-year {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--rojo);
+    margin-bottom: 0.25rem;
+  }
+
+  .timeline-text {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.6;
+  }
+
+  .timeline-quiebre {
+    margin-top: 2rem;
+    padding: 2rem;
+    background: rgba(128,1,0,0.2);
+    border-left: 4px solid var(--rojo);
+    border-radius: 0 8px 8px 0;
+  }
+
+  .timeline-quiebre p {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.9);
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 5 — ECOSISTEMA
+  ══════════════════════════════════════ */
+  #ecosistema {
+    background: var(--borgona);
+  }
+
+  .eco-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+
+  .eco-card {
+    background: rgba(0,0,0,0.25);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    transition: transform 0.3s, background 0.3s;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+
+  .eco-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .eco-card:hover {
+    background: rgba(128,1,0,0.3);
+    transform: translateY(-5px) !important;
+  }
+
+  .eco-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .eco-channel {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rojo);
+    margin-bottom: 0.5rem;
+  }
+
+  .eco-desc {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: rgba(255,255,255,0.8);
+  }
+
+  .eco-last {
+    grid-column: span 3;
+    background: rgba(128,1,0,0.15);
+    border-color: rgba(128,1,0,0.4);
+    text-align: center;
+    padding: 1.5rem;
+    border-radius: 8px;
+  }
+
+  .eco-last p {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: rgba(255,255,255,0.8);
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 6 — ERROR COMÚN (IMPACTO)
+  ══════════════════════════════════════ */
+  #error-comun {
+    background: var(--rojo);
+    text-align: center;
+    padding: 7rem 2rem;
+  }
+
+  .error-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-style: italic;
+    font-weight: 700;
+    line-height: 1.3;
+    max-width: 800px;
+    margin: 0 auto 2rem;
+    position: relative;
+  }
+
+  .error-quote::before {
+    content: '"';
+    font-size: 8rem;
+    color: rgba(255,255,255,0.1);
+    position: absolute;
+    top: -3rem;
+    left: -2rem;
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+
+  .error-sub {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.75);
+    max-width: 600px;
+    margin: 0 auto 1rem;
+    line-height: 1.7;
+  }
+
+  .error-punch {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--blanco);
+    margin-top: 2rem;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 7 — DEMOCRATIZACIÓN
+  ══════════════════════════════════════ */
+  #democratizacion {
+    background: var(--vino);
+  }
+
+  .demo-compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .demo-col {
+    padding: 2.5rem;
+    border-radius: 8px;
+  }
+
+  .demo-col-before {
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .demo-col-after {
+    background: rgba(128,1,0,0.2);
+    border: 1px solid rgba(128,1,0,0.4);
+  }
+
+  .demo-col-title {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .demo-col-title .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    display: inline-block;
+  }
+
+  .demo-col-after .demo-col-title .dot { background: var(--rojo); }
+
+  .demo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 0.95rem;
+  }
+
+  .demo-item:last-child { border-bottom: none; }
+
+  .demo-item-label { color: rgba(255,255,255,0.7); }
+  .demo-item-price { color: rgba(255,255,255,0.4); font-style: italic; }
+  .demo-col-after .demo-item-price { color: var(--rojo); font-style: normal; font-weight: 600; }
+
+  .demo-conclusion {
+    margin-top: 2.5rem;
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-style: italic;
+    color: rgba(255,255,255,0.85);
+    padding: 2rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    background: rgba(0,0,0,0.2);
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 8 — ¿POR QUÉ FALLA?
+  ══════════════════════════════════════ */
+  #por-que-falla {
+    background: var(--borgona);
+    text-align: center;
+    padding: 6rem 2rem;
+  }
+
+  .stat-big {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(5rem, 15vw, 12rem);
+    font-weight: 900;
+    color: var(--rojo);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: opacity 0.8s, transform 0.8s;
+  }
+
+  .stat-big.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .stat-desc {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    font-style: italic;
+    max-width: 700px;
+    margin: 0 auto 1.5rem;
+    color: rgba(255,255,255,0.85);
+  }
+
+  .stat-sub {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.55);
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 9 — CLIENTE IDEAL
+  ══════════════════════════════════════ */
+  #cliente-ideal {
+    background: var(--vino);
+  }
+
+  .questions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .question-card {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 2rem;
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    transition: border-color 0.3s, transform 0.3s;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.5s, transform 0.5s, border-color 0.3s;
+  }
+
+  .question-card.visible { opacity: 1; transform: translateX(0); }
+  .question-card:hover { border-color: var(--rojo); transform: translateX(5px); }
+
+  .question-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  .question-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.85);
+  }
+
+  .tool-cta {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: rgba(128,1,0,0.2);
+    border: 1px solid rgba(128,1,0,0.4);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .tool-cta-text {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.75);
+  }
+
+  .tool-cta-text strong { color: var(--blanco); }
+
+  .tool-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--rojo);
+    color: var(--blanco);
+    padding: 0.75rem 1.75rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: background 0.3s, transform 0.3s;
+  }
+
+  .tool-btn:hover {
+    background: var(--rojo-claro);
+    transform: translateY(-2px);
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 10 — EMBUDO
+  ══════════════════════════════════════ */
+  #embudo {
+    background: var(--borgona);
+  }
+
+  .funnel-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin-top: 3rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .funnel-step {
+    width: 100%;
+    display: flex;
+    align-items: stretch;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+
+  .funnel-step.visible { opacity: 1; transform: translateY(0); }
+
+  .funnel-bar {
+    flex: 1;
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 4px;
+    margin-bottom: 4px;
+    transition: transform 0.3s;
+    cursor: default;
+  }
+
+  .funnel-bar:hover { transform: scale(1.02); }
+
+  .funnel-step:nth-child(1) .funnel-bar { background: rgba(128,1,0,0.9); clip-path: polygon(0 0, 100% 0, 97% 100%, 3% 100%); }
+  .funnel-step:nth-child(2) .funnel-bar { background: rgba(128,1,0,0.75); clip-path: polygon(3% 0, 97% 0, 94% 100%, 6% 100%); }
+  .funnel-step:nth-child(3) .funnel-bar { background: rgba(128,1,0,0.6); clip-path: polygon(6% 0, 94% 0, 91% 100%, 9% 100%); }
+  .funnel-step:nth-child(4) .funnel-bar { background: rgba(128,1,0,0.45); clip-path: polygon(9% 0, 91% 0, 88% 100%, 12% 100%); }
+
+  .funnel-stage {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+
+  .funnel-action {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.7);
+    font-style: italic;
+  }
+
+  .funnel-meta {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.5);
+    text-align: right;
+    margin-top: 0.5rem;
+  }
+
+  .funnel-note {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.55);
+    font-style: italic;
+    padding: 0 2rem;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 11 — OBJETIVOS REALES
+  ══════════════════════════════════════ */
+  #objetivos {
+    background: var(--vino);
+  }
+
+  .obj-compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .obj-pair {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .obj-item {
+    padding: 1.5rem;
+    border-radius: 8px;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+
+  .obj-item.visible { opacity: 1; transform: translateY(0); }
+
+  .obj-bad {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .obj-good {
+    background: rgba(128,1,0,0.25);
+    border: 1px solid rgba(128,1,0,0.5);
+  }
+
+  .obj-icon {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .obj-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.8);
+  }
+
+  .obj-rule {
+    grid-column: span 2;
+    text-align: center;
+    margin-top: 1rem;
+    padding: 1.5rem;
+    background: rgba(0,0,0,0.2);
+    border-radius: 8px;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.7);
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 12 — OBJ / ESTRATEGIA / TÁCTICA
+  ══════════════════════════════════════ */
+  #estrategia {
+    background: var(--borgona);
+  }
+
+  .ost-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+    position: relative;
+  }
+
+  .ost-grid::before {
+    content: '→';
+    position: absolute;
+    top: 50%; left: 33.33%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    color: rgba(128,1,0,0.6);
+    z-index: 2;
+  }
+
+  .ost-grid::after {
+    content: '→';
+    position: absolute;
+    top: 50%; left: 66.66%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    color: rgba(128,1,0,0.6);
+    z-index: 2;
+  }
+
+  .ost-card {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 2.5rem 2rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+
+  .ost-card.visible { opacity: 1; transform: translateY(0); }
+
+  .ost-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: rgba(128,1,0,0.4);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .ost-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--rojo);
+    margin-bottom: 1rem;
+  }
+
+  .ost-def {
+    font-style: italic;
+    color: rgba(255,255,255,0.6);
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .ost-example {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.9);
+    border-left: 3px solid var(--rojo);
+    padding-left: 1rem;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 13 — MÉTRICAS
+  ══════════════════════════════════════ */
+  #metricas {
+    background: var(--borgona);
+  }
+
+  .metrics-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 0.5rem;
+  }
+
+  .metrics-tab {
+    padding: 0.6rem 1.2rem;
+    border-radius: 4px 4px 0 0;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    background: transparent;
+    color: rgba(255,255,255,0.4);
+    border: 1px solid transparent;
+    border-bottom: none;
+    transition: all 0.3s;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .metrics-tab.active {
+    background: rgba(128,1,0,0.3);
+    color: var(--blanco);
+    border-color: rgba(128,1,0,0.5);
+  }
+
+  .metrics-panel { display: none; }
+  .metrics-panel.active { display: block; }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  .metric-card {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 6px;
+    padding: 1.5rem;
+    transition: border-color 0.3s;
+  }
+
+  .metric-card:hover { border-color: rgba(128,1,0,0.5); }
+
+  .metric-name {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--rojo);
+    margin-bottom: 0.5rem;
+  }
+
+  .metric-def {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .roas-roi-box {
+    margin-top: 2rem;
+    padding: 2rem;
+    background: rgba(128,1,0,0.15);
+    border: 1px solid rgba(128,1,0,0.4);
+    border-radius: 8px;
+  }
+
+  .roas-roi-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--blanco);
+  }
+
+  .roas-roi-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .roas-roi-item { }
+  .roas-roi-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--rojo);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+
+  .roas-roi-text {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.6;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 14 — GLOSARIO
+  ══════════════════════════════════════ */
+  #glosario {
+    background: var(--borgona);
+  }
+
+  .glossary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+
+  .glossary-item {
+    padding: 1.5rem;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-left: 3px solid var(--rojo);
+    border-radius: 0 6px 6px 0;
+    opacity: 0;
+    transform: translateX(-15px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+
+  .glossary-item.visible { opacity: 1; transform: translateX(0); }
+
+  .glossary-term {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--rojo);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+  }
+
+  .glossary-def {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.7);
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 16 — LAS 3 IDEAS (IMPACTO)
+  ══════════════════════════════════════ */
+  #tres-ideas {
+    background: var(--rojo);
+    text-align: center;
+    padding: 7rem 2rem;
+  }
+
+  .ideas-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 800px;
+    margin: 3rem auto 0;
+  }
+
+  .idea-item {
+    padding: 2.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    text-align: left;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+
+  .idea-item:last-child { border-bottom: none; }
+  .idea-item.visible { opacity: 1; transform: translateY(0); }
+
+  .idea-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 900;
+    color: rgba(255,255,255,0.15);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 3rem;
+  }
+
+  .idea-suit {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .idea-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    line-height: 1.4;
+    font-weight: 700;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 17 — TAREA + PREVIEW
+  ══════════════════════════════════════ */
+  #tarea {
+    background: var(--vino);
+  }
+
+  .tarea-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .tarea-box {
+    padding: 2.5rem;
+    border-radius: 8px;
+  }
+
+  .tarea-box-homework {
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .tarea-box-preview {
+    background: rgba(128,1,0,0.2);
+    border: 1px solid rgba(128,1,0,0.4);
+  }
+
+  .tarea-box-title {
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 1.5rem;
+  }
+
+  .tarea-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 1.5rem;
+  }
+
+  .tarea-date {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.4);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .tarea-date::before {
+    content: '♣';
+    color: var(--rojo);
+  }
+
+  .preview-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .preview-item:last-child { border-bottom: none; }
+  .preview-suit { color: var(--rojo); font-size: 1rem; flex-shrink: 0; margin-top: 0.1rem; }
+  .preview-text { font-size: 0.95rem; color: rgba(255,255,255,0.75); line-height: 1.5; }
+
+  /* ══════════════════════════════════════
+     FOOTER
+  ══════════════════════════════════════ */
+  footer {
+    background: #1a0102;
+    padding: 3rem 2rem;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--rojo);
+    margin-bottom: 0.5rem;
+    opacity: 0.6;
+  }
+
+  .footer-text {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* ══════════════════════════════════════
+     SCROLL REVEAL + GENERAL ANIMATIONS
+  ══════════════════════════════════════ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ══════════════════════════════════════
+     RESPONSIVE
+  ══════════════════════════════════════ */
+  @media (max-width: 768px) {
+    .mc-grid,
+    .demo-compare,
+    .noches-grid,
+    .questions-grid,
+    .obj-compare,
+    .ost-grid,
+    .tarea-grid,
+    .roas-roi-grid { grid-template-columns: 1fr; }
+
+    .eco-grid { grid-template-columns: 1fr 1fr; }
+    .eco-last { grid-column: span 2; }
+
+    .hero-card-left, .hero-card-right { display: none; }
+
+    .ost-grid::before, .ost-grid::after { display: none; }
+
+    .obj-rule { grid-column: span 1; }
+
+    nav { padding: 1rem; }
+    .nav-links { display: none; }
+
+    .idea-num { display: none; }
+  }
+
+  @media (max-width: 480px) {
+    .eco-grid { grid-template-columns: 1fr; }
+    .eco-last { grid-column: span 1; }
+    section { padding: 3.5rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Partículas de fondo -->
+<div id="particles"></div>
+
+<!-- Marca de agua Ż -->
+<div class="watermark">Ż</div>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-logo">Ż<span>eal</span></div>
+  <ul class="nav-links">
+    <li><a href="#maria-clara">Quién soy</a></li>
+    <li><a href="#tres-noches">Las noches</a></li>
+    <li><a href="#ecosistema">Ecosistema</a></li>
+    <li><a href="#metricas">Métricas</a></li>
+    <li><a href="#tres-ideas">Ideas clave</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HERO — SLIDE 1 ══ -->
+<section id="hero">
+  <div class="hero-bg-pattern"></div>
+
+  <div class="hero-card-left">♠</div>
+  <div class="hero-card-right">♥</div>
+
+  <div class="hero-suits">
+    <span>♠</span><span>♣</span><span>♥</span><span>♦</span>
+  </div>
+
+  <p class="hero-eyebrow">Martes 9 de junio · 7:00 pm – 9:00 pm</p>
+
+  <h1 class="hero-title">
+    Modo ON<br>
+    <span class="by">by</span> Zeal
+  </h1>
+
+  <p class="hero-subtitle">Noche 1: Fundamentos que sí importan</p>
+
+  <p class="hero-date">♠ &nbsp; La primera carta ha sido repartida &nbsp; ♠</p>
+
+  <a href="#maria-clara" class="hero-cta">
+    ♦ &nbsp; Descubrir la mano
+  </a>
+
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    Desliza
+  </div>
+</section>
+
+<!-- ══ SLIDE 2 — MARIA CLARA ══ -->
+<section id="maria-clara">
+  <div class="container">
+    <div class="mc-grid">
+      <div class="mc-photo-wrapper reveal">
+        <div class="mc-photo-frame">
+          <!-- Reemplaza el src con la ruta de tu foto -->
+          <img src="maria-clara.jpg" alt="Maria Clara Zea" class="mc-photo"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="mc-photo-placeholder" style="display:none;">
+            <span>♠</span>
+            <div class="mc-card-corner">Ż</div>
+            <div class="mc-card-corner-br">Ż</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="section-label">Slide 02 — Ponente</div>
+        <h2 class="section-title">Quién es<br><em>Maria Clara</em></h2>
+
+        <span class="mc-tag">Administradora de Mercadeo y Financiera · 5 años B2B & SaaS</span>
+
+        <p class="mc-text">
+          En el sector tecnológico fue donde me volví aliada estratégica de la tecnología — y de los datos.
+          Porque los datos no mienten: nos dicen quién es el consumidor, qué quiere y cómo mejorar su experiencia.
+        </p>
+        <p class="mc-text">
+          De ahí nació todo: Padre Santo, un software, y <strong>Zeal</strong>, mi agencia de marketing.
+          Y de ahí nació también mi obsesión por el marketing digital — la herramienta que conecta la tecnología,
+          los datos y las personas.
+        </p>
+        <p class="mc-text" style="color:rgba(255,255,255,0.6); font-style:italic;">
+          Hoy estoy aquí para compartir lo que aprendí en el camino.
+        </p>
+
+        <div class="mc-stats">
+          <div>
+            <div class="mc-stat-num">5</div>
+            <div class="mc-stat-label">Años de experiencia</div>
+          </div>
+          <div>
+            <div class="mc-stat-num">B2B</div>
+            <div class="mc-stat-label">& SaaS</div>
+          </div>
+          <div>
+            <div class="mc-stat-num">2</div>
+            <div class="mc-stat-label">Ventures propias</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SLIDE 3 — LAS 3 NOCHES ══ -->
+<section id="tres-noches">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Slide 03 — Roadmap</div>
+      <h2 class="section-title">Tres noches.<br><em>Un sistema.</em></h2>
+    </div>
+
+    <div class="noches-grid">
+      <div class="noche-card noche-active reveal">
+        <span class="noche-suit">♠</span>
+        <div class="noche-num">Noche 1 — Hoy</div>
+        <div class="noche-title">Fundamentos que sí importan</div>
+        <p class="noche-desc">Entendemos el ecosistema del marketing digital, aprendemos a construir una estrategia real y descubrimos las métricas que realmente mueven un negocio.</p>
+      </div>
+      <div class="noche-card reveal" style="transition-delay:0.15s">
+        <span class="noche-suit">♣</span>
+        <div class="noche-num">Noche 2 — Miércoles 10</div>
+        <div class="noche-title">Cómo llegar a la gente</div>
+        <p class="noche-desc">Paid media en Meta y Google, cómo funciona la pauta con presupuestos reales y truquitos de SEO para aparecer cuando te buscan.</p>
+      </div>
+      <div class="noche-card reveal" style="transition-delay:0.3s">
+        <span class="noche-suit">♥</span>
+        <div class="noche-num">Noche 3 — Próximamente</div>
+        <div class="noche-title">Claude como tu equipo de marketing</div>
+        <p class="noche-desc">Cómo usar inteligencia artificial para crear estrategias, copys, hacer keyword research y planear campañas completas — en minutos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SLIDE 4 — EVOLUCIÓN ══ -->
+<section id="evolucion">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Slide 04 — Historia</div>
+      <h2 class="section-title">La evolución<br><em>del marketing</em></h2>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-year">1950s</div>
+        <div class="timeline-text">Marketing masivo: TV, radio, prensa. Solo las grandes marcas podían aparecer.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1980s</div>
+        <div class="timeline-text">Marketing directo: catálogos, correo físico, telemarketing.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1990s</div>
+        <div class="timeline-text">Nace internet: los primeros banners y sitios web.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2000s</div>
+        <div class="timeline-text">Buscadores y email marketing: Google cambia las reglas del juego.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2004</div>
+        <div class="timeline-text">Redes sociales: Facebook, y después todo lo demás.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2010s</div>
+        <div class="timeline-text">Marketing de contenidos, influencers, pauta digital. El campo se democratiza.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2020s</div>
+        <div class="timeline-text">Inteligencia artificial: el marketing entra en una nueva era. Hoy cualquiera puede competir.</div>
+      </div>
+    </div>
+
+    <div class="timeline-quiebre reveal">
+      <p>♠ El gran quiebre: por primera vez en la historia, una persona sola con un celular puede llegar a miles de personas sin necesidad de un presupuesto millonario.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SLIDE 5 — ECOSISTEMA ══ -->
+<section id="ecosistema">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Slide 05 — Sistema</div>
+      <h2 class="section-title">El ecosistema<br><em>digital</em></h2>
+    </div>
+
+    <div class="eco-grid">
+      <div class="eco-card">
+        <div class="eco-icon">📱</div>
+        <div class="eco-channel">Redes sociales</div>
+        <div class="eco-desc">donde está la atención</div>
+      </div>
+      <div class="eco-card">
+        <div class="eco-icon">🔍</div>
+        <div class="eco-channel">Buscadores</div>
+        <div class="eco-desc">donde está la intención</div>
+      </div>
+      <div class="eco-card">
+        <div class="eco-icon">⚡</div>
+        <div class="eco-channel">Pauta pagada</div>
+        <div class="eco-desc">donde está la velocidad</div>
+      </div>
+      <div class="eco-card">
+        <div class="eco-icon">✍️</div>
+        <div class="eco-channel">Contenido orgánico</div>
+        <div class="eco-desc">donde está la confianza</div>
+      </div>
+      <div class="eco-card">
+        <div class="eco-icon">📧</div>
+        <div class="eco-channel">Email marketing</div>
+        <div class="eco-desc">donde está la fidelización</div>
+      </div>
+      <div class="eco-card">
+        <div class="eco-icon">🤖</div>
+        <div class="eco-channel">IA</div>
+        <div class="eco-desc">donde está el futuro</div>
+      </div>
+      <div class="eco-last reveal">
+        <p>Todos conectados. Todos hablando entre sí.<br>
+        <strong>El marketing digital no es un canal — es un sistema.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SLIDE 6 — ERROR COMÚN (IMPACTO) ══ -->
+<section id="error-comun">
+  <div class="container">
+    <div class="section-label" style="justify-content:center; margin-bottom:2rem;">
+      Slide 06 — El error
+    </div>
+
+    <blockquote class="error-quote reveal">
+      El marketing digital no es publicar en Instagram.
+    </blockquote>
+
+    <p class="error-sub reveal" style="transition-delay:0.2s">
+      Publicar sin estrategia es como repartir volantes en una ciudad sin saber dónde vive tu cliente.
+    </p>
+
+    <p class="error-punch reveal" style="transition-delay:0.4s">
+      ♠ &nbsp; El canal no es el problema. La falta de sistema, sí. &nbsp; ♠
+    </p>
+  </div>
+</section>
+
+<!-- ══ SLIDE 7 — DEMOCRATIZACIÓN ══ -->
+<section id="democratizacion">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Slide 07 — Oportunidad</div>
+      <h2 class="section-title">La democratización<br><em>del marketing</em></h2>
+    </div>
+
+    <div class="demo-compare">
+      <div class="demo-col demo-col-before reveal">
+        <div class="demo-col-title"><span class="dot"></span> Antes de internet</div>
+        <div class="demo-item">
+          <span class="demo-item-label">Pautar en televisión</span>
+          <span class="demo-item-price">millones</span>
+        </div>
+        <div class="demo-item">
+          <span class="demo-item-label">Local en zona comercial</span>
+          <span class="demo-item-price">millones</span>
+        </div>
+        <div class="demo-item">
+          <span class="demo-item-label">Aparecer en una revista</span>
+          <span class="demo-item-price">millones</span>
+        </div>
+        <div class="demo-item">
+          <span class="demo-item-label">Lanzar un restaurante</span>
+          <span class="demo-item-price">más fe que plan</span>
+        </div>
+      </div>
+      <div class="demo-col demo-col-after reveal" style="transition-delay:0.2s">
+        <div class="demo-col-title"><span class="dot"></span> Hoy</div>
+        <div class="demo-item">
+          <span class="demo-item-label">Crear una página web</span>
+          <span class="demo-item-price">desde gratis</span>
+        </div>
+        <div class="demo-item">
+          <span class="demo-item-label">Llegar a 10.000 personas en Meta</span>
+          <span class="demo-item-price">desde $10 USD</span>
+        </div>
+        <div class="demo-item">
+          <span class="demo-item-label">Posicionarte en Google</span>
+          <span class="demo-item-price">con contenido + tiempo</span>
+        </div>
+        <div class="demo-item">
+          <span class="demo-item-label">Construir una comunidad</span>
+          <span class="demo-item-price">con un celular</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-conclusion reveal">
+      El marketing digital no igualó el juego —<br>
+      le dio ventaja a los que antes no tenían ninguna.
+    </div>
+  </div>
+</section>
+
+<!-- ══ SLIDE 8 — ¿POR QUÉ FALLA? ══ -->
+<section id="por-que-falla">
+  <div class="container">
+    <div class="section-label" style="justify-content:center; margin-bottom:1.5rem;">Slide 08 — El dato</div>
+    <div class="stat-big">80%</div>
+    <p class="stat-desc">de los emprendedores invierte en pauta<br>sin saber a quién le está hablando.</p>
+    <p class="stat-sub reveal">Sin claridad de audiencia, cada peso invertido es un peso perdido.</p>
+  </div>
+</section>
+
+<!-- ══ SLIDE 9 — CLIENTE IDEAL ══ -->
+<section id="cliente-ideal">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Slide 09 — Audiencia</div>
+      <h2 class="section-title">Tu cliente<br><em>ideal</em></h2>
+    </div>
+
+    <div class="questions-grid">
+      <div class="question-card">
+        <div class="question-icon">♠</div>
+        <div class="question-text">¿Quién es? ¿Qué edad tiene? ¿Qué hace?</div>
+      </div>
+      <div class="question-card">
+        <div class="question-icon">♣</div>
+        <div class="question-text">¿Qué le duele? ¿Qué quiere lograr?</div>
+      </div>
+      <div class="question-card">
+        <div class="question-icon">♥</div>
+        <div class="question-text">¿Dónde pasa el tiempo en internet?</div>
+      </div>
+      <div class="question-card">
+        <div class="question-icon">♦</div>
+        <div class="question-text">¿Qué lo haría elegirte a ti y no a la competencia?</div>
+      </div>
+    </div>
+
+    <div class="tool-cta reveal">
+      <div class="tool-cta-text">
+        <strong>Herramienta gratuita</strong> para construir tu buyer persona
+      </div>
+      <a href="https://www.hubspot.es/make-my-persona" target="_blank" rel="noopener" class="tool-btn">
+        ♦ &nbsp; Construir mi persona →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SLIDE 10 — EMBUDO ══ -->
+<section id="embudo">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Slide 10 — Sistema</div>
+      <h2 class="section-title">El embudo<br><em>de marketing</em></h2>
+    </div>
+
+    <div class="funnel-wrap">
+      <div class="funnel-step">
+        <div class="funnel-bar">
+          <span class="funnel-stage">Awareness</span>
+          <span class="funnel-action">Te descubren</span>
+        </div>
+      </div>
+      <div class="funnel-step">
+        <div class="funnel-bar">
+          <span class="funnel-stage">Consideración</span>
+          <span class="funnel-action">Te evalúan</span>
+        </div>
+      </div>
+      <div class="funnel-step">
+        <div class="funnel-bar">
+          <span class="funnel-stage">Conversión</span>
+          <span class="funnel-action">Te compran</span>
+        </div>
+      </div>
+      <div class="funnel-step">
+        <div class="funnel-bar">
+          <span class="funnel-stage">Fidelización</span>
+          <span class="funnel-action">Te recomiendan</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="funnel-note reveal">
+      Cada etapa necesita un mensaje diferente, un canal diferente y una métrica diferente.
+    </p>
+  </div>
+</section>
+
+<!-- ══ SLIDE 11 — OBJETIVOS REALES ══ -->
+<section id="objetivos">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Slide 11 — Estrategia</div>
+      <h2 class="section-title">Objetivos reales<br><em>vs. objetivos vagos</em></h2>
+    </div>
+
+    <div class="obj-compare">
+      <div class="obj-pair">
+        <div class="obj-item obj-bad">
+          <div class="obj-icon">✗</div>
+          <div class="obj-text">"Quiero más seguidores"</div>
+        </div>
+        <div class="obj-item obj-good">
+          <div class="obj-icon">✓</div>
+          <div class="obj-text">"Quiero 500 seguidores nuevos en Instagram en 30 días publicando 4 veces por semana"</div>
+        </div>
+      </div>
+      <div class="obj-pair">
+        <div class="obj-item obj-bad">
+          <div class="obj-icon">✗</div>
+          <div class="obj-text">"Quiero vender más"</div>
+        </div>
+        <div class="obj-item obj-good">
+          <div class="obj-icon">✓</div>
+          <div class="obj-text">"Quiero conseguir 10 clientes nuevos en junio con un presupuesto de pauta de $200.000 COP semanales"</div>
+        </div>
+      </div>
+      <div class="obj-rule reveal">
+        La diferencia: un objetivo vago no se puede medir. Un objetivo real sí.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SLIDE 12 — OBJ / ESTRATEGIA / TÁCTICA ══ -->
+<section id="estrategia">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Slide 12 — Marco</div>
+      <h2 class="section-title">Objetivo · Estrategia<br><em>· Táctica</em></h2>
+    </div>
+
+    <div class="ost-grid">
+      <div class="ost-card">
+        <div class="ost-num">01</div>
+        <div class="ost-label">Objetivo</div>
+        <div class="ost-def">Qué quiero lograr</div>
+        <div class="ost-example">"Conseguir 20 leads en julio"</div>
+      </div>
+      <div class="ost-card">
+        <div class="ost-num">02</div>
+        <div class="ost-label">Estrategia</div>
+        <div class="ost-def">Cómo lo voy a lograr</div>
+        <div class="ost-example">"Llegar a emprendedores en Medellín a través de pauta en Meta"</div>
+      </div>
+      <div class="ost-card">
+        <div class="ost-num">03</div>
+        <div class="ost-label">Táctica</div>
+        <div class="ost-def">Qué acciones concretas voy a ejecutar</div>
+        <div class="ost-example">"Campaña de leads con formulario nativo en Facebook, $50.000 COP diarios, público 25–40 años, intereses: emprendimiento y negocios"</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SLIDE 13 — MÉTRICAS ══ -->
+<section id="metricas">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Slide 13 — Datos</div>
+      <h2 class="section-title">Métricas: upper funnel<br><em>vs. lower funnel</em></h2>
+    </div>
+
+    <div class="metrics-tabs" style="margin-top:2.5rem;">
+      <button class="metrics-tab active" onclick="showTab('upper')">Upper Funnel</button>
+      <button class="metrics-tab" onclick="showTab('lower')">Lower Funnel</button>
+      <button class="metrics-tab" onclick="showTab('conversion')">Conversión</button>
+      <button class="metrics-tab" onclick="showTab('roas')">ROAS vs. ROI</button>
+    </div>
+
+    <div id="tab-upper" class="metrics-panel active">
+      <div class="metrics-grid">
+        <div class="metric-card"><div class="metric-name">Impresiones</div><div class="metric-def">Número de veces que se muestra un contenido</div></div>
+        <div class="metric-card"><div class="metric-name">Alcance</div><div class="metric-def">Número de personas únicas que lo vieron</div></div>
+        <div class="metric-card"><div class="metric-name">Frecuencia</div><div class="metric-def">Cuántas veces en promedio lo vio cada persona</div></div>
+        <div class="metric-card"><div class="metric-name">Interacción</div><div class="metric-def">Likes, comentarios, guardados, compartidos</div></div>
+        <div class="metric-card"><div class="metric-name">Engagement</div><div class="metric-def">% de personas que interactuaron vs. las que lo vieron</div></div>
+        <div class="metric-card"><div class="metric-name">ThruPlay</div><div class="metric-def">Reproducciones de video al 100% o mínimo 15 segundos</div></div>
+      </div>
+    </div>
+
+    <div id="tab-lower" class="metrics-panel">
+      <div class="metrics-grid">
+        <div class="metric-card"><div class="metric-name">Tráfico</div><div class="metric-def">Cantidad de visitas a tu web</div></div>
+        <div class="metric-card"><div class="metric-name">Usuarios</div><div class="metric-def">Personas únicas que visitaron tu sitio</div></div>
+        <div class="metric-card"><div class="metric-name">Usuarios nuevos</div><div class="metric-def">Los que llegaron por primera vez</div></div>
+        <div class="metric-card"><div class="metric-name">Sesiones</div><div class="metric-def">Número total de visitas (una persona puede generar varias)</div></div>
+        <div class="metric-card"><div class="metric-name">Tasa de rebote</div><div class="metric-def">% de personas que entraron y se fueron sin interactuar</div></div>
+        <div class="metric-card"><div class="metric-name">Sesiones con interacción</div><div class="metric-def">Visitas donde el usuario hizo algo</div></div>
+      </div>
+    </div>
+
+    <div id="tab-conversion" class="metrics-panel">
+      <div class="metrics-grid">
+        <div class="metric-card"><div class="metric-name">Ticket promedio</div><div class="metric-def">Valor promedio de cada venta</div></div>
+        <div class="metric-card"><div class="metric-name">ROAS</div><div class="metric-def">Ingresos generados por cada peso invertido en pauta</div></div>
+        <div class="metric-card"><div class="metric-name">ROI</div><div class="metric-def">Rentabilidad real del negocio incluyendo todos los costos</div></div>
+        <div class="metric-card"><div class="metric-name">CPA</div><div class="metric-def">Cuánto te costó conseguir un cliente</div></div>
+        <div class="metric-card"><div class="metric-name">CTR</div><div class="metric-def">% de personas que hicieron clic en tu anuncio vs. las que lo vieron</div></div>
+        <div class="metric-card"><div class="metric-name">CPC</div><div class="metric-def">Cuánto pagaste por cada clic</div></div>
+      </div>
+    </div>
+
+    <div id="tab-roas" class="metrics-panel">
+      <div class="roas-roi-box">
+        <div class="roas-roi-title">ROAS vs. ROI — la diferencia que importa</div>
+        <div class="roas-roi-grid">
+          <div class="roas-roi-item">
+            <div class="roas-roi-label">ROAS</div>
+            <div class="roas-roi-text">Solo mide el retorno de la inversión publicitaria. Ejemplo: ROAS de 4x significa que por cada $1 en pauta generaste $4 en ventas.</div>
+          </div>
+          <div class="roas-roi-item">
+            <div class="roas-roi-label">ROI</div>
+            <div class="roas-roi-text">Mide el retorno real incluyendo todos los costos del negocio. Si tus costos operativos son altos, el ROI puede ser negativo aunque el ROAS sea positivo.</div>
+          </div>
+        </div>
+        <p style="margin-top:1.5rem; font-size:0.9rem; color:rgba(255,255,255,0.6); font-style:italic; border-top:1px solid rgba(255,255,255,0.1); padding-top:1.5rem;">
+          ♠ El ROAS es un insumo del ROI — te dice qué tan eficiente fue la pauta, pero el ROI te dice si el negocio realmente ganó dinero.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SLIDE 14 — GLOSARIO ══ -->
+<section id="glosario" style="background:#350205;">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Slide 14 — Referencia</div>
+      <h2 class="section-title">Glosario<br><em>rápido</em></h2>
+    </div>
+
+    <div class="glossary-grid">
+      <div class="glossary-item">
+        <div class="glossary-term">CTR — Click Through Rate</div>
+        <div class="glossary-def">% de personas que hicieron clic en tu anuncio vs. las que lo vieron</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">CPC — Costo Por Clic</div>
+        <div class="glossary-def">Cuánto pagaste por cada clic</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">CPM — Costo Por Mil</div>
+        <div class="glossary-def">Cuánto cuesta mostrarle tu anuncio a 1.000 personas</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">CPA — Costo Por Adquisición</div>
+        <div class="glossary-def">Cuánto te costó conseguir un cliente</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Lead</div>
+        <div class="glossary-def">Persona que mostró interés y dejó sus datos</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Conversión</div>
+        <div class="glossary-def">Cuando alguien completa la acción que querías: compra, registro, contacto</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Landing Page</div>
+        <div class="glossary-def">Página diseñada específicamente para convertir visitas en leads o ventas</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Píxel de Meta</div>
+        <div class="glossary-def">Código que instalas en tu web para rastrear el comportamiento de los usuarios</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SLIDE 16 — LAS 3 IDEAS (IMPACTO) ══ -->
+<section id="tres-ideas">
+  <div class="container">
+    <div class="section-label" style="justify-content:center; margin-bottom:1rem;">Slide 16 — Para llevarte a casa</div>
+    <h2 class="section-title" style="font-family:'Playfair Display',serif;">Las 3 ideas<br><em>de la noche</em></h2>
+
+    <div class="ideas-list">
+      <div class="idea-item">
+        <div class="idea-num">1</div>
+        <div class="idea-suit">♠</div>
+        <div class="idea-text">El marketing digital es un ecosistema, no una red social</div>
+      </div>
+      <div class="idea-item">
+        <div class="idea-num">2</div>
+        <div class="idea-suit">♠</div>
+        <div class="idea-text">Sin estrategia, cualquier inversión es un gasto</div>
+      </div>
+      <div class="idea-item">
+        <div class="idea-num">3</div>
+        <div class="idea-suit">♠</div>
+        <div class="idea-text">Solo necesitas medir 3 o 4 métricas — las que le hablan a tu objetivo</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SLIDE 17 — TAREA + PREVIEW ══ -->
+<section id="tarea">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Slide 17 — Acción</div>
+      <h2 class="section-title">Tarea +<br><em>preview Noche 2</em></h2>
+    </div>
+
+    <div class="tarea-grid">
+      <div class="tarea-box tarea-box-homework reveal">
+        <div class="tarea-box-title">Tu tarea para mañana</div>
+        <p class="tarea-text">
+          Escribe quién es tu cliente ideal en 3 líneas y cuál es tu objetivo de marketing para los próximos 30 días.
+        </p>
+        <p style="font-size:0.85rem; color:rgba(255,255,255,0.5); font-style:italic;">
+          Sin esto, la Noche 2 no tiene suelo firme.
+        </p>
+      </div>
+      <div class="tarea-box tarea-box-preview reveal" style="transition-delay:0.2s">
+        <div class="tarea-box-title">Mañana en la Noche 2</div>
+        <div class="preview-item">
+          <span class="preview-suit">♣</span>
+          <span class="preview-text">Paid media en Meta y Google</span>
+        </div>
+        <div class="preview-item">
+          <span class="preview-suit">♣</span>
+          <span class="preview-text">Truquitos de SEO para tu web o ecommerce</span>
+        </div>
+        <div style="margin-top:2rem; padding-top:1.5rem; border-top:1px solid rgba(255,255,255,0.1);">
+          <div class="tarea-date">Miércoles 10 de junio · 7:00 pm</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-logo">Ż</div>
+  <p class="footer-text">Modo ON by Zeal · Noche 1 · 2025</p>
+</footer>
+
+<script>
+  /* ══════════════════════════════════════
+     PARTÍCULAS
+  ══════════════════════════════════════ */
+  (function() {
+    const container = document.getElementById('particles');
+    const suits = ['♠', '♣', '♥', '♦'];
+    for (let i = 0; i < 30; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.textContent = suits[Math.floor(Math.random() * suits.length)];
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.animationDuration = (15 + Math.random() * 25) + 's';
+      p.style.animationDelay = (Math.random() * 20) + 's';
+      p.style.fontSize = (0.8 + Math.random() * 1.5) + 'rem';
+      container.appendChild(p);
+    }
+  })();
+
+  /* ══════════════════════════════════════
+     SCROLL REVEAL
+  ══════════════════════════════════════ */
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll(
+    '.reveal, .timeline-item, .eco-card, .question-card, .obj-item, .ost-card, .funnel-step, .glossary-item, .idea-item, .stat-big'
+  ).forEach(el => observer.observe(el));
+
+  /* ══════════════════════════════════════
+     TIMELINE DELAYS
+  ══════════════════════════════════════ */
+  document.querySelectorAll('.timeline-item').forEach((el, i) => {
+    el.style.transitionDelay = (i * 0.1) + 's';
+  });
+
+  document.querySelectorAll('.eco-card').forEach((el, i) => {
+    el.style.transitionDelay = (i * 0.08) + 's';
+  });
+
+  document.querySelectorAll('.idea-item').forEach((el, i) => {
+    el.style.transitionDelay = (i * 0.2) + 's';
+  });
+
+  document.querySelectorAll('.funnel-step').forEach((el, i) => {
+    el.style.transitionDelay = (i * 0.15) + 's';
+  });
+
+  document.querySelectorAll('.glossary-item').forEach((el, i) => {
+    el.style.transitionDelay = (i * 0.07) + 's';
+  });
+
+  /* ══════════════════════════════════════
+     METRICS TABS
+  ══════════════════════════════════════ */
+  function showTab(id) {
+    document.querySelectorAll('.metrics-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.metrics-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  /* ══════════════════════════════════════
+     NAV SMOOTH HIDE ON SCROLL DOWN
+  ══════════════════════════════════════ */
+  let lastScroll = 0;
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    const curr = window.scrollY;
+    if (curr > lastScroll && curr > 200) {
+      nav.style.transform = 'translateY(-100%)';
+    } else {
+      nav.style.transform = 'translateY(0)';
+    }
+    lastScroll = curr;
+  });
+  nav.style.transition = 'transform 0.4s ease';
+</script>
+
+</body>
+</html>
